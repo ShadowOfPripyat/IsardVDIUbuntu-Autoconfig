@@ -11,6 +11,7 @@ G='\e[92m' #Verd
 Y='\e[93m' #Groc
 NC='\e[39m' # Color per defecte (blanc)
 RA='\e[0m' #Fer un reset a tots els atributs de format al terminal
+INV='\e[7m' # Inverteix els colors
  # Formatació
 B='\e[1m' #Lletra Negreta
 S='\e[4m' #Lletra subrallada
@@ -18,7 +19,7 @@ S='\e[4m' #Lletra subrallada
 
 # Imprimir el Títol ascii art
 cat << "EOF"
-    Welcom to..
+    Benvingut al...
     _________ ___    ____  ____     __________  _   ____________________  ______  ___  __________  ____ 
    /  _/ ___//   |  / __ \/ __ \   / ____/ __ \/ | / / ____/  _/ ____/ / / / __ \/   |/_  __/ __ \/ __ \
    / / \__ \/ /| | / /_/ / / / /  / /   / / / /  |/ / /_   / // / __/ / / / /_/ / /| | / / / / / / /_/ /
@@ -35,15 +36,20 @@ randip=$((1 + RANDOM % 65))
 
 echo
 echo
-echo "${B} ${S} Aquest Script configura el netplan, et deixa posar una contrassenya de 1 caracter i t'obre un asistent per canviar la mida de la lletra"
-echo 
+echo "${B} ${S} Aquest script et permet:"
+echo "  - Configurar el netplan per la targeta "Personal""
+echo "  - Posar contrasenya de 1 lletra"
+echo "  - Actualitzar els Repositoris"
+echo "  - Canviar la Mida de la Lletra"
 echo
 echo ${RA}
 
 # Funció per introduir una IP personalitzada
 read_custom_ip() {
-  read -p "Enter custom IP address for enp2s0 (press Enter for default 172.16.$randip.10/24): " custom_ip
+  read -p "Introdueix una IP per la targeta "enp2s0" (Predeterminada 172.16.$randip.10/24): " custom_ip
 }
+
+echo
 
 # Ask user for custom IP
 read -p "vols posar una IP per la targeta "Personal" (enp2s0)? (s/n): " set_custom_ip
@@ -77,7 +83,7 @@ clear
 echo
 echo
 echo "${G} S'ha actualitzat i aplicat la configuració del NETPLAN."
-echo "$FITXER"
+echo "($FITXER_NETPLAN)"
 echo
 
 # Canvia la politica de minima llargada de la contrasenya a 1 caracter
@@ -91,7 +97,7 @@ echo
 echo
 echo "${G} s'ha tret la restricció de llargada minima del Passwd ${NC} ($FITXER_PAM)"
 echo
-echo
+echo ${RA}
 
 # Pregunta si vols canviar la contrasenya.
 read -p "   Vols canviar la contrasenya? [Enter]=Si [Esc]/N=NO: " choice
