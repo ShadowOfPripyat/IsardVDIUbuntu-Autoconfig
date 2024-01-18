@@ -1,6 +1,18 @@
 #!/bin/bash
 
+# Borra el terminal.
+clear
+
 # SCRIPT DISSENYAT PER CONFIGURAR MÀQUINES UBUNTU SERVER 22.04 del ISARDVDI
+
+
+# Colors
+R='\033[0;31m' #Vermell
+G='\033[0;32m' #Verd
+Y='\033[1;33m' #Groc
+NC='\033[0m' # No Color
+# per cridar als colors, s'han de posar davant del text: echo -e "${COLOR} text". Disponibles ${R} ${G} ${Y} ${NC}
+
 
 # Definir la ruta de del fitxer netplan
 FITXER_NETPLAN="/etc/netplan/00-installer-config.yaml"
@@ -21,54 +33,68 @@ EOL
 
 # Aplica la configuració del fitxer netplan
 netplan apply
-echo "S'ha actualitzat i aplicat la configuració del NETPLAN."
+
+# Després Borra el terminal.
+clear
+
+echo -e "S'ha actualitzat i aplicat la configuració del NETPLAN."
+echo
+echo
 
 # Canvia la politica de minima llargada de la contrasenya a 1 caracter
-echo "Adding lines to $FITXER_PAM"
+echo -e "Adding lines to $FITXER_PAM"
 cat <<EOL >> "$FITXER_PAM"
 password  [success=1 default=ignore] 	pam_unix.so obscure yescript minlen=1
 password	requisite	pam_deny.so
 password	required	pam_permit.so
 EOL
 
-echo "s'ha tret la restricció de llargada minima del Passwd ($FITXER_PAM)"
+echo -e "${G} s'ha tret la restricció de llargada minima del Passwd ${NC} ($FITXER_PAM)"
+echo
+echo
 
 # Pregunta si vols canviar la contrasenya.
-read -p "Vols canviar la contrasenya? [Enter]=Si [Esc]=NO: " choice
+read -p "Vols canviar la contrasenya? [Enter]=Si [Esc]/N=NO: " choice
 
 case "$choice" in
   "" )
     passwd
-    echo "S'ha canviat la contrasenya correctament"
+    echo -e "${G} S'ha canviat la contrasenya correctament"
     ;;
   * )
-    echo "Hasta luego lucas!"
+    echo -e "${Y} No has volgut canviar la contrasenya"
     ;;
 esac
 
+# Després Borra el terminal.
+clear
+
 # Pregunta si vols Actualitzar els repositoris
-read -p "Vols canviar la contrasenya? [Enter]=Si [Esc]=NO: " ReposChoice
+read -p "Vols actualitzar els repositoris? [Enter]=Si [Esc]/N=NO: " ReposChoice
 
 case "$ReposChoice" in
   "" )
     sudo apt update
-    echo "S'han actualitzat tots els repositoris"
+    echo -e "${G} S'han actualitzat tots els repositoris"
     ;;
   * )
-    echo "Hasta luego lucas!"
+    echo -e "${Y} No has volgut canviar la contrasenya"
     ;;
 esac
 
+# Després Borra el terminal.
+clear
+
 # Pregunta si vols vols executar "console-setup" per canviar el tipus i la mida de la lletra 
-read -p "Vols canviar la contrasenya? [Enter]=Si [Esc]=NO: " FontChoice
+read -p "Vols canviar el tipus i la mida de la lletra? [Enter]=Si [Esc]=NO: " FontChoice
 
 case "$FontChoice" in
   "" )
     sudo dpkg-reconfigure console-setup
-    echo "S'ha canviat la configuració de la lletra al terminal"
+    echo -e "S'ha canviat la configuració de la lletra del terminal."
     ;;
   * )
-    echo " Eso es todo amigo, Hasta luego lucas!"
+    echo -e "${Y} No s'ha canviat la configuració lletra. Eso es todo amigo."
     ;;
 esac
 
