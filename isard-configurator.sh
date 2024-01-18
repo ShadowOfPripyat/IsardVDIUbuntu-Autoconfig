@@ -7,13 +7,14 @@ clear
 
 
 # Colors
-R='\033[0;31m' #Vermell
-G='\033[0;32m' #Verd
-Y='\033[1;33m' #Groc
-NC='\033[0m' # No Color
+R='\e[31m' #Vermell
+G='\e[32m' #Verd
+Y='\e[33m' #Groc
+NC='\e[97' # No Color
+RA='\e[0m' #Fer un reset a tots els atributs de format al terminal
 # per cridar als colors, s'han de posar davant del text: echo -e "${COLOR} text". Disponibles ${R} ${G} ${Y} ${NC}
 
-
+echo "${G}"
 # Definir la ruta de del fitxer netplan
 FITXER_NETPLAN="/etc/netplan/00-installer-config.yaml"
 
@@ -37,18 +38,21 @@ netplan apply
 # Després Borra el terminal.
 clear
 
+echo
+echo
 echo -e "S'ha actualitzat i aplicat la configuració del NETPLAN."
 echo
 echo
 
 # Canvia la politica de minima llargada de la contrasenya a 1 caracter
-echo -e "Adding lines to $FITXER_PAM"
 cat <<EOL >> "$FITXER_PAM"
 password  [success=1 default=ignore] 	pam_unix.so obscure yescript minlen=1
 password	requisite	pam_deny.so
 password	required	pam_permit.so
 EOL
 
+echo
+echo
 echo -e "${G} s'ha tret la restricció de llargada minima del Passwd ${NC} ($FITXER_PAM)"
 echo
 echo
@@ -70,6 +74,8 @@ esac
 clear
 
 # Pregunta si vols Actualitzar els repositoris
+echo
+echo
 read -p "Vols actualitzar els repositoris? [Enter]=Si [Esc]/N=NO: " ReposChoice
 
 case "$ReposChoice" in
@@ -78,7 +84,11 @@ case "$ReposChoice" in
     echo -e "${G} S'han actualitzat tots els repositoris"
     ;;
   * )
+    echo
+    echo
     echo -e "${Y} No has volgut canviar la contrasenya"
+    echo
+    echo
     ;;
 esac
 
@@ -91,10 +101,19 @@ read -p "Vols canviar el tipus i la mida de la lletra? [Enter]=Si [Esc]=NO: " Fo
 case "$FontChoice" in
   "" )
     sudo dpkg-reconfigure console-setup
+
+    echo
+    echo
     echo -e "S'ha canviat la configuració de la lletra del terminal."
+    echo
+    echo
     ;;
   * )
+    echo
+    echo
     echo -e "${Y} No s'ha canviat la configuració lletra. Eso es todo amigo."
+    echo
+    echo
     ;;
 esac
 
