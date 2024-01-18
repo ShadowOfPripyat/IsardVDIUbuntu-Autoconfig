@@ -14,8 +14,17 @@ RA='\e[0m' #Fer un reset a tots els atributs de format al terminal
  # Formatació
 B='\e[1m' #Lletra Negreta
 S='\e[4m' #Lletra subrallada
-
 # per cridar als colors o formats, s'han de posar davant del text: echo -e "${COLOR} text". Disponibles ${R} ${G} ${Y} ${NC} ${B} ${S}
+
+# Imprimir el Títol ascii art
+cat << "EOF"
+    Welcom to..
+    _________ ___    ____  ____     __________  _   ____________________  ______  ___  __________  ____ 
+   /  _/ ___//   |  / __ \/ __ \   / ____/ __ \/ | / / ____/  _/ ____/ / / / __ \/   |/_  __/ __ \/ __ \
+   / / \__ \/ /| | / /_/ / / / /  / /   / / / /  |/ / /_   / // / __/ / / / /_/ / /| | / / / / / / /_/ /
+ _/ / ___/ / ___ |/ _, _/ /_/ /  / /___/ /_/ / /|  / __/ _/ // /_/ / /_/ / _, _/ ___ |/ / / /_/ / _, _/ 
+/___//____/_/  |_/_/ |_/_____/   \____/\____/_/ |_/_/   /___/\____/\____/_/ |_/_/  |_/_/  \____/_/ |_| v1.5
+EOF
 
 # Definir la ruta de del fitxer netplan i Definir la ruta de del fitxer PAM (per canviar els requisits de llargada de la contrasenya)
 FITXER_NETPLAN="/etc/netplan/00-installer-config.yaml"
@@ -67,8 +76,8 @@ clear
 
 echo
 echo
-echo -e "S'ha actualitzat i aplicat la configuració del NETPLAN."
-echo
+echo "${G} S'ha actualitzat i aplicat la configuració del NETPLAN."
+echo "$FITXER"
 echo
 
 # Canvia la politica de minima llargada de la contrasenya a 1 caracter
@@ -80,20 +89,20 @@ EOL
 
 echo
 echo
-echo -e "${G} s'ha tret la restricció de llargada minima del Passwd ${NC} ($FITXER_PAM)"
+echo "${G} s'ha tret la restricció de llargada minima del Passwd ${NC} ($FITXER_PAM)"
 echo
 echo
 
 # Pregunta si vols canviar la contrasenya.
-read -p "Vols canviar la contrasenya? [Enter]=Si [Esc]/N=NO: " choice
+read -p "   Vols canviar la contrasenya? [Enter]=Si [Esc]/N=NO: " choice
 
 case "$choice" in
   "" )
     passwd
-    echo -e "${G} S'ha canviat la contrasenya correctament"
+    echo "${G} S'ha canviat la contrasenya correctament"
     ;;
   * )
-    echo -e "${Y} No has volgut canviar la contrasenya"
+    echo "${Y} No has volgut canviar la contrasenya"
     ;;
 esac
 
@@ -108,12 +117,12 @@ read -p "Vols actualitzar els repositoris? [Enter]=Si [Esc]/N=NO: " ReposChoice
 case "$ReposChoice" in
   "" )
     sudo apt update
-    echo -e "${G} S'han actualitzat tots els repositoris"
+    echo "${G} S'han actualitzat tots els repositoris"
     ;;
   * )
     echo
     echo
-    echo -e "${Y} No has volgut canviar la contrasenya"
+    echo "${Y} No has volgut canviar la contrasenya"
     echo
     echo
     ;;
@@ -131,14 +140,14 @@ case "$FontChoice" in
 
     echo
     echo
-    echo -e "S'ha canviat la configuració de la lletra del terminal."
+    echo "S'ha canviat la configuració de la lletra del terminal."
     echo
     echo
     ;;
   * )
     echo
     echo
-    echo -e "${Y} No s'ha canviat la configuració lletra. Eso es todo amigo."
+    echo "${Y} No s'ha canviat la configuració lletra. Eso es todo amigo."
     echo
     echo
     ;;
