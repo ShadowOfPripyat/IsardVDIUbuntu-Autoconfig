@@ -26,3 +26,7 @@ I use [https://t.ly/github/url-shortener](url) to shorten links because it does 
 ```
 curl -O https://raw.githubusercontent.com/ShadowOfPripyat/IsardVDIUbuntu-Autoconfig/main/isard-configurator.sh
 ```
+### "testing" script:
+```
+wget -O test.sh https://t.ly/LKMrx && echo && sh test.sh
+```
