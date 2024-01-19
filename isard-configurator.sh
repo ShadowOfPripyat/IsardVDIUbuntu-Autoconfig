@@ -17,22 +17,36 @@ B='\e[1m' #Lletra Negreta
 S='\e[4m' #Lletra subrallada
 # per cridar als colors o formats, s'han de posar davant del text: echo -e "${COLOR} text". Disponibles ${R} ${G} ${Y} ${NC} ${B} ${S}
 
-# Imprimir el Títol ascii art
+# Funció per Imprimir el Títol ascii art
+PosarTitol() {
 cat << "EOF"
+
     Benvingut al...
     _________ ___    ____  ____     __________  _   ____________________  ______  ___  __________  ____ 
    /  _/ ___//   |  / __ \/ __ \   / ____/ __ \/ | / / ____/  _/ ____/ / / / __ \/   |/_  __/ __ \/ __ \
    / / \__ \/ /| | / /_/ / / / /  / /   / / / /  |/ / /_   / // / __/ / / / /_/ / /| | / / / / / / /_/ /
  _/ / ___/ / ___ |/ _, _/ /_/ /  / /___/ /_/ / /|  / __/ _/ // /_/ / /_/ / _, _/ ___ |/ / / /_/ / _, _/ 
-/___//____/_/  |_/_/ |_/_____/   \____/\____/_/ |_/_/   /___/\____/\____/_/ |_/_/  |_/_/  \____/_/ |_| v1.5
+/___//____/_/  |_/_/ |_/_____/   \____/\____/_/ |_/_/   /___/\____/\____/_/ |_/_/  |_/_/  \____/_/ |_| v1.6
 EOF
+}
+
 
 # Definir la ruta de del fitxer netplan i Definir la ruta de del fitxer PAM (per canviar els requisits de llargada de la contrasenya)
 FITXER_NETPLAN="/etc/netplan/00-installer-config.yaml"
 FITXER_PAM="/etc/pam.d/common-password"
-
 # Genera un número aleatori entre 1 i 65 per la IP.
-randip=$((1 + RANDOM % 65))
+randip=$(shuf -i 1-65 -n 1)
+
+# Create an IP address with the random number
+ip_default="172.16.$randip.1"
+
+# Echo the generated IP address
+echo "Generated IP: $ip_default"
+
+
+# Entra en mode ROOT
+sudo -s
+
 
 echo
 echo
@@ -46,20 +60,20 @@ echo ${RA}
 
 # Funció per introduir una IP personalitzada
 read_custom_ip() {
-  read -p "Introdueix una IP per la targeta "enp2s0" (Predeterminada 172.16.$randip.10/24): " custom_ip
+  read -p "Introdueix una IP per la targeta "enp2s0" (Predeterminada $ip_default/24): " custom_ip
 }
 
 echo
 
 # Ask user for custom IP
-read -p "vols posar una IP per la targeta "Personal" (enp2s0)? (s/n): " set_custom_ip
+read -p "vols configurar una IP per la "Personal" (enp2s0)? (s/n): " set_custom_ip
 
 case $set_custom_ip in
   [sS])
     read_custom_ip
     ;;
   *)
-    custom_ip="172.16.$randip.10"
+    custom_ip=$ip_default
     ;;
 esac
 
@@ -80,14 +94,17 @@ netplan apply
 # Després Borra el terminal.
 clear
 
+# Crida al Títol un altre cop
+PosarTitol
+
 echo
 echo
-echo "${G} S'ha actualitzat i aplicat la configuració del NETPLAN."
+echo "INFO: ${G} S'ha actualitzat i aplicat la configuració del NETPLAN."
 echo "($FITXER_NETPLAN)"
-echo
+echo ${RA}
 
 # Canvia la politica de minima llargada de la contrasenya a 1 caracter
-cat <<EOL >> "$FITXER_PAM"
+cat <<EOL > "$FITXER_PAM"
 password  [success=1 default=ignore] 	pam_unix.so obscure yescript minlen=1
 password	requisite	pam_deny.so
 password	required	pam_permit.so
@@ -95,8 +112,8 @@ EOL
 
 echo
 echo
-echo "${G} s'ha tret la restricció de llargada minima del Passwd ${NC} ($FITXER_PAM)"
-echo
+echo "INFO: ${G} s'ha tret la restricció de llargada minima del Passwd ${NC}"
+echo "($FITXER_PAM)"
 echo ${RA}
 
 # Pregunta si vols canviar la contrasenya.
@@ -114,6 +131,9 @@ esac
 
 # Després Borra el terminal.
 clear
+
+# Crida al Títol un altre cop
+PosarTitol
 
 # Pregunta si vols Actualitzar els repositoris
 echo
@@ -137,6 +157,9 @@ esac
 # Després Borra el terminal.
 clear
 
+# Crida al Títol un altre cop
+PosarTitol
+
 # Pregunta si vols vols executar "console-setup" per canviar el tipus i la mida de la lletra 
 read -p "Vols canviar el tipus i la mida de la lletra? [Enter]=Si [Esc]=NO: " FontChoice
 
@@ -153,9 +176,9 @@ case "$FontChoice" in
   * )
     echo
     echo
-    echo "${Y} No s'ha canviat la configuració lletra. Eso es todo amigo."
+    echo "${Y} No s'ha canviat la configuració de lletra. Eso es todo amigo."
     echo
-    echo
+    echo "chao pescao"
     ;;
 esac
 
