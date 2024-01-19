@@ -1,10 +1,17 @@
-#!/usr/bin/expect
-set command "sudo apt update"
-set PASS [lindex $argv 1]
-set timeout 1
+#!/usr/bin/expect -f
+
+# Your command
+set command "sudo apt install firefox"
+
+# Password to be sent
+set password "your_password_here"
+
+# Spawn the command
 spawn $command
-expect -exact "Enter new UNIX password: "
-send -- "$PASS\r"
+
+# Expect a prompt containing "password" and send the password
 expect "*password*"
-send -- "$PASS\r"
+send "$password\r"
+
+# Wait for the command to finish
 expect eof
