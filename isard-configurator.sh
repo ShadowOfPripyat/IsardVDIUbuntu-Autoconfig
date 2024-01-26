@@ -106,18 +106,19 @@ alias ping='ping -c 4'
 alias update='sudo apt-get update && sudo apt-get upgrade'
 EOL
 )
-
 # Path to the .bash_aliases file
 bash_aliases_file="$HOME/.bash_aliases"
-
 # Create or overwrite the .bash_aliases file
 echo "$aliases_content" > "$bash_aliases_file"
-
 # Apply the aliases
 source "$bash_aliases_file"
 
-
-
+# Instala el BAT
+echo instalant el BAT...
+echo
+curl -sLO https://github.com/sharkdp/bat/releases/download/v0.24.0/bat-musl_0.24.0_amd64.deb
+sudo dpkg -i bat-musl_0.24.0_amd64.deb
+rm *bat-musl_0.24.0_amd64.deb
 
 
 # Després Borra el terminal.
