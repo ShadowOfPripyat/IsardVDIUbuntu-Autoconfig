@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # check if dialog is installed and if its not, install it
 REQUIRED_PKG="dialog"
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $REQUIRED_PKG|grep "install ok installed")
@@ -104,7 +103,7 @@ sudo netplan apply
 
 #----------------DELETE--USER--PASSWORD---------------
 deletepassword(){
-    passwd -d $user
+    passwd -d $USER
 }
 
 
