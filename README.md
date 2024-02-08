@@ -4,10 +4,10 @@ This is my script to autoconfigure my new Ubuntu Server virtual machines. it won
 It is designed to be downloaded and ready as fast as  possible
 
 # Usage
-Use _wget_ or _curl_ to get the script:
+Use _wget_ or _curl_ to get the script with User Interface:
 
 ```
-wget -O sh.sh https://t.ly/DTWSr
+wget -O sh.sh t.ly/_4g2g
 ```
 then
 ```
