@@ -107,10 +107,6 @@ deletepassword(){
     passwd -d $user
 }
 
-#---------DOWNLOAD-_LDAP_CONFIGURATOR----------
-
-download
-
 
 #----------------other------------
 
@@ -123,39 +119,6 @@ DIALOG_CANCEL=1
 DIALOG_ESC=255
 HEIGHT=0
 WIDTH=0
-
-editfilesmenu(){
-    exec 3>&1
-  filesmenu=$(dialog \
-    --backtitle "ISARD CONFIGURATOR v1 GRAPHICAL-EDITION | VIEW AND EDIT LDAP FILES" \
-    --title "VIEW AND EDIT LDAP FILES" \
-    --clear \
-    --cancel-label "Back" \
-    --menu "In this menu you can choose to open a file listed here with NANO.  \n \n Please select:" $HEIGHT $WIDTH 6 \
-    "1" "NETPLAN (/etc/ldapscripts/)" \
-    "2" "Funció extra (No Implementada)" \
-    "3" "Funció extra (No Implementada)" \
-    2>&1 1>&3)
-  exit_status=$?
-  exec 3>&-
-
-  case $filesmenu in
-    1 )
-      clear
-      sudo nano $FITXER_NETPLAN
-      result=$(echo "Has tornat!")
-      display_result "ISARD CONFIGURATOR"
-      ;;
-    2 )
-      result=$(echo "No hi ha res a veure de moment.")
-      display_result "Funció no implementada"
-      ;;
-    3 )
-      result=$(echo "No hi ha res a veure de moment.")
-      display_result "Funció no implementada"
-      ;;
-  esac
-}
 
 
 
@@ -178,7 +141,6 @@ while true; do
     "2" "Treure la contrasenya del usuari $USER" \
     "3" "Canviar la mida de lletra del terminal" \
     "4" "Descarregar el Script 'LDAP-CONFIGURATOR'" \
-
     2>&1 1>&3)
   exit_status=$?
   exec 3>&-
